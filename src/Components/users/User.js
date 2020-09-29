@@ -1,23 +1,25 @@
 import React, { Fragment, useEffect, useContext } from 'react';
 import Spinner from '../layout/Spinner';
-
-import { Link } from 'react-router-dom';
 import Repos from '../repos/Repos';
-import GitHubContext from '../../context/github/githubContext';
+import { Link } from 'react-router-dom';
+import GithubContext from '../../context/github/githubContext';
 
 const User = ({ match }) => {
+  const githubContext = useContext(GithubContext);
+
+  const { getUser, loading, user, repos, getUserRepos } = githubContext;
+
   useEffect(() => {
     getUser(match.params.login);
     getUserRepos(match.params.login);
-    //eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
-  const githubContext = useContext(GitHubContext);
-  const { repos, getUserRepos, getUser, loading, user } = githubContext;
+
   const {
     name,
+    company,
     avatar_url,
     location,
-    company,
     bio,
     blog,
     login,
@@ -34,7 +36,7 @@ const User = ({ match }) => {
   return (
     <Fragment>
       <Link to='/' className='btn btn-light'>
-        Back to Search
+        Back To Search
       </Link>
       Hireable:{' '}
       {hireable ? (
@@ -47,8 +49,8 @@ const User = ({ match }) => {
           <img
             src={avatar_url}
             className='round-img'
-            style={{ width: '150px' }}
             alt=''
+            style={{ width: '150px' }}
           />
           <h1>{name}</h1>
           <p>Location: {location}</p>
@@ -61,14 +63,13 @@ const User = ({ match }) => {
             </Fragment>
           )}
           <a href={html_url} className='btn btn-dark my-1'>
-            Visit GitHub Profile
+            Visit Github Profile
           </a>
           <ul>
             <li>
               {login && (
                 <Fragment>
-                  <strong>Username: </strong>
-                  {login}
+                  <strong>Username: </strong> {login}
                 </Fragment>
               )}
             </li>
@@ -76,8 +77,7 @@ const User = ({ match }) => {
             <li>
               {company && (
                 <Fragment>
-                  <strong>Company: </strong>
-                  {company}
+                  <strong>Company: </strong> {company}
                 </Fragment>
               )}
             </li>
@@ -85,8 +85,7 @@ const User = ({ match }) => {
             <li>
               {blog && (
                 <Fragment>
-                  <strong>Website: </strong>
-                  {blog}
+                  <strong>Website: </strong> {blog}
                 </Fragment>
               )}
             </li>
